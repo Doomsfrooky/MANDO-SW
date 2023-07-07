@@ -1,0 +1,73 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+#define NUM_STUDENTS 5
+#define MAX_SCORE 100
+#define MIDTERM_WEIGHT 50
+#define FINAL_WEIGHT 30
+#define ASSIGNMENT_WEIGHT 20
+
+typedef struct {
+    int midterm;
+    int final;
+    int assignment;
+    int total;
+    float average;
+    int rank;
+} Student;
+
+void calculateTotal(Student students[]) {
+    for (int i = 0; i < NUM_STUDENTS; i++) {
+        students[i].total = students[i].midterm * MIDTERM_WEIGHT / MAX_SCORE +
+                            students[i].final * FINAL_WEIGHT / MAX_SCORE +
+                            students[i].assignment * ASSIGNMENT_WEIGHT / MAX_SCORE;
+    }
+}
+
+void calculateAverage(Student students[]) {
+    for (int i = 0; i < NUM_STUDENTS; i++) {
+        students[i].average = (float)students[i].total / 100;
+    }
+}
+
+void calculateRank(Student students[]) {
+    int i, j;
+    for (i = 0; i < NUM_STUDENTS; i++) {
+        students[i].rank = 1;
+        for (j = 0; j < NUM_STUDENTS; j++) {
+            if (students[j].total > students[i].total) {
+                students[i].rank++;
+            }
+        }
+    }
+}
+
+void printStudents(Student students[]) {
+    printf("학번\t중간고사\t기말고사\t과제\t총점\t평균\t등수\n");
+    for (int i = 0; i < NUM_STUDENTS; i++) {
+        printf("%d\t%d\t%d\t%d\t%d\t%.2f\t%d\n", i + 1, students[i].midterm,
+               students[i].final, students[i].assignment, students[i].total,
+               students[i].average, students[i].rank);
+    }
+}
+
+int main() {
+    srand(time(NULL));
+
+    Student students[NUM_STUDENTS];
+
+    // 학생 성적 생성
+    for (int i = 0; i < NUM_STUDENTS; i++) {
+        students[i].midterm = rand() % (MAX_SCORE + 1);
+        students[i].final = rand() % (MAX_SCORE + 1);
+        students[i].assignment = rand() % (MAX_SCORE + 1);
+    }
+
+    calculateTotal(students);
+    calculateAverage(students);
+    calculateRank(students);
+    printStudents(students);
+
+    return 0;
+}
