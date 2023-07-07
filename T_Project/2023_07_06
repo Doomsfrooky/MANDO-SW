@@ -1,0 +1,91 @@
+//1 : a랑 b의 랜덤값 0부터 99까지 모두 생성해서 출력
+//2 : a랑 b의 랜덤으로 생성된 값을 모두 오름차순으로 정렬시킨걸 출력
+//3 : a와 b의 랜덤값을 오름차순으로 정렬한 걸 모두 합친 다음에 c에다가 삽입한 결과를 출력
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#define CRT_SECURE_NO_WARNINGS
+
+void generateRandomValues(int* arr, int size) {
+
+    for (int i = 0; i < size; i++) {
+        arr[i] = rand() % 100;  // 0부터 99까지의 랜덤값 생성
+
+    }
+
+}
+
+void sortArray(int* arr, int size) {
+
+    for (int i = 0; i < size - 1; i++) {
+
+        for (int j = i + 1; j < size; j++) {
+
+            if (arr[i] > arr[j]) {
+                int temp = arr[i];
+                arr[i] = arr[j];
+                arr[j] = temp;
+
+            }
+
+        }
+
+    }
+
+}
+
+int main() {
+    srand(time(0));  // 난수 생성을 위한 시드 설정
+
+    int size;
+    printf("배열 크기 삽입 : ");
+    scanf_s("%d", &size);
+
+    int* a = (int*)malloc(size * sizeof(int));
+    int* b = (int*)malloc(size * sizeof(int));
+    int* c = (int*)malloc(2 * size * sizeof(int));
+
+    // 1. a와 b 랜덤 값 출력
+    generateRandomValues(a, size);
+    generateRandomValues(b, size);
+    printf("a : \n");
+    for (int i = 0; i < size; i++) {
+        printf("%d ", a[i]);
+    }
+    printf("\n\nb : \n");
+    for (int i = 0; i < size; i++) {
+        printf("%d ", b[i]);
+    }
+    printf("\n\n");
+
+    // 2. 랜덤 값 정렬
+    sortArray(a, size);
+    sortArray(b, size);
+    printf("a의 오름차순으로 정렬된 값 : \n");
+    for (int i = 0; i < size; i++) {
+        printf("%d ", a[i]);
+    }
+    printf("\n\nb의 오름차순으로 정렬된 값 : \n");
+    for (int i = 0; i < size; i++) {
+        printf("%d ", b[i]);
+    }
+    printf("\n\n");
+
+    // 3. 정렬된 값을 c에다가 합치는 것
+    for (int i = 0; i < size; i++) {
+        c[i] = a[i];
+        c[i + size] = b[i];
+    }
+    sortArray(c, 2 * size);
+    printf("c : \n");
+    for (int i = 0; i < 2 * size; i++) {
+        printf("%d ", c[i]);
+    }
+    printf("\n\n");
+
+    free(a);
+    free(b);
+    free(c);
+
+    return 0;
+}
